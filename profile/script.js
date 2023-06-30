@@ -36,6 +36,7 @@ input1.addEventListener('submit', (event) => {
         document.getElementById('message').innerText = 'Error :All Fields are Mandatory.'
         return;
     }
+
     let user = JSON.parse(localStorage.getItem('currUser'));
 
     user.firstName = firstName;
@@ -84,7 +85,7 @@ input1.addEventListener('submit', (event) => {
 
 
 
-// change firstname and lastname
+// change password
 input2.addEventListener('submit', (event) => {
     event.preventDefault();
 

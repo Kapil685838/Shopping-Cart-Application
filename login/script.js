@@ -1,82 +1,81 @@
 const form = document.getElementById('inputs');
 
-var totalUser=[];
+var totalUser = [];
 
-if(localStorage.getItem('currUser')){
-    document.getElementById('message').style.display='inline';
-    document.getElementById('message').setAttribute('class','green')
-    document.getElementById('message').innerText='Login Successfully';
+if (localStorage.getItem('currUser')) {
+    document.getElementById('message').style.display = 'inline';
+    document.getElementById('message').setAttribute('class', 'green')
+    document.getElementById('message').innerText = 'Login Successfully';
 }
 
 
 
 
-form.addEventListener('submit',(event)=>{
+form.addEventListener('submit', (event) => {
     event.preventDefault();
     // console.log("Hello");
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
 
-    if(!email || !password){
-        document.getElementById('message').style.display='inline';
-        document.getElementById('message').setAttribute('class','red')
-        document.getElementById('message').innerText='Error :All Fields are Mandatory.'
+    if (!email || !password) {
+        document.getElementById('message').style.display = 'inline';
+        document.getElementById('message').setAttribute('class', 'red')
+        document.getElementById('message').innerText = 'Error :All Fields are Mandatory.'
         return;
     }
 
-    let flag=false;
+    let flag = false;
     let currUser;
 
-    if(localStorage.getItem('totalUser')){
-        totalUser=JSON.parse(localStorage.getItem('totalUser'));
+    if (localStorage.getItem('totalUser')) {
+        totalUser = JSON.parse(localStorage.getItem('totalUser'));
 
 
-        totalUser.forEach((user)=>{
-            if(user.email==email){
-                flag=true;
-                user.token=generateToken();
-                currUser=user;
-                localStorage.setItem('currUser',JSON.stringify(user));
+        totalUser.forEach((user) => {
+            if (user.email == email) {
+                flag = true;
+                user.token = generateToken();
+                currUser = user;
+                localStorage.setItem('currUser', JSON.stringify(user));
             }
         })
 
     }
 
-    if(flag==true && password!=currUser.password){
-        document.getElementById('message').style.display='inline';
-        document.getElementById('message').setAttribute('class','red')
-        document.getElementById('message').innerText='Error : Wrong Password.'
+    if (flag == true && password != currUser.password) {
+        document.getElementById('message').style.display = 'inline';
+        document.getElementById('message').setAttribute('class', 'red')
+        document.getElementById('message').innerText = 'Error : Wrong Password.'
         return;
     }
-    
-    if(flag==false){
-        document.getElementById('message').style.display='inline';
-        document.getElementById('message').setAttribute('class','red')
-        document.getElementById('message').innerText='Error : User does not Exist.'
+
+    if (flag == false) {
+        document.getElementById('message').style.display = 'inline';
+        document.getElementById('message').setAttribute('class', 'red')
+        document.getElementById('message').innerText = 'Error : User does not Exist.'
         return;
     }
 
 
-    document.getElementById('message').style.display='inline';
-    document.getElementById('message').setAttribute('class','green')
-    document.getElementById('message').innerText='Login Successfully';
+    document.getElementById('message').style.display = 'inline';
+    document.getElementById('message').setAttribute('class', 'green')
+    document.getElementById('message').innerText = 'Login Successfully';
 
     form.reset();
 
-    setTimeout(()=>{  
-        location.href='../shop/index.html';
-     },1500);
+    setTimeout(() => {
+        location.href = '../shop/index.html';
+    }, 1500);
 
 
 })
 
 
-function generateToken(){
+function generateToken() {
     let token = '';
     for (let i = 0; i < 16; i++) {
-      token += String.fromCharCode(Math.floor(Math.random() * 256));
+        token += String.fromCharCode(Math.floor(Math.random() * 256));
     }
-    
     return btoa(token);
 }

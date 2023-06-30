@@ -70,7 +70,7 @@ main aside {
   padding-top: 1rem;
   width: 11rem;
   padding-bottom: 80px;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 
 main main-content {
@@ -82,7 +82,6 @@ main main-content {
 aside section {
   padding: 1rem;
   border-bottom: 1px solid white;
-  
 }
 
 aside section:last-child {
@@ -159,7 +158,6 @@ main-content .items .item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 }
 
 main-content .items .item img {
