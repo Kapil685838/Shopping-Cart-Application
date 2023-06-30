@@ -10,18 +10,66 @@
   <body>
     <nav>
       <div class="brand">
-        <a href="/">MeShop.</a>
+        <a href="../index.html">MeShop.</a>
       </div>
       <div class="nav-items">
-        <a href="./index.html">Home</a>
+        <a href="../index.html">Home</a>
+        <a href="../login/index.html">Login</a>
+        <a href="../signup/index.html">Signup</a>
+        <a href="../shop/index.html">Shop</a>
         <a href="../cart/index.html">My Cart</a>
         <a href="../profile/index.html">Profile</a>
-
       </div>
     </nav>
 
     <main>
       <aside>
+        <section>
+          <title>Colors</title>
+          <ul>
+            <li>
+              <input id="red" type="checkbox" name="color" />
+              <label for="red">Red</label>
+            </li>
+            <li>
+              <input id="blue" type="checkbox" name="color" />
+              <label for="blue">Blue</label>
+            </li>
+            <li>
+              <input id="green" type="checkbox" name="color" />
+              <label for="green">Green</label>
+            </li>
+            <li>
+              <input id="black" type="checkbox" name="color" />
+              <label for="black">Black</label>
+            </li>
+            <li>
+              <input id="white" type="checkbox" name="color" />
+              <label for="white">White</label>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <title>Sizes</title>
+          <ul>
+            <li>
+              <input id="s" type="checkbox" name="color" />
+              <label for="s">S</label>
+            </li>
+            <li>
+              <input id="m" type="checkbox" name="color" />
+              <label for="m">M</label>
+            </li>
+            <li>
+              <input id="l" type="checkbox" name="color" />
+              <label for="l">L</label>
+            </li>
+            <li>
+              <input id="xl" type="checkbox" name="color" />
+              <label for="xl">XL</label>
+            </li>
+          </ul>
+        </section>
         <section>
           <title>Rating</title>
           <input
@@ -43,68 +91,59 @@
         </section>
         <section>
           <title>Price Range</title>
-          <button id="apply-btn">apply</button>
           <ul>
             <li>
-              <input id="low" type="checkbox" name="prange" />
+              <input id="0-25" type="checkbox" name="prange" value="0-25" />
               <label for="0-25">$0 to $25</label>
             </li>
             <li>
-              <input id="mid" type="checkbox" name="prange" />
+              <input id="25-50" type="checkbox" name="prange" value="25-50" />
               <label for="25-50">$25 to $50</label>
             </li>
             <li>
-              <input id="high" type="checkbox" name="prange" />
+              <input id="50-100" type="checkbox" name="prange" value="50-100"/>
               <label for="50-100">$50 to $100</label>
             </li>
             <li>
-              <input id="vHigh" type="checkbox" name="prange" />
+              <input id="100on" type="checkbox" name="prange" value="100+"/>
               <label for="100on">$100 onwards</label>
             </li>
           </ul>
         </section>
       </aside>
-      <main-content id="main-div">
-        <input type="text" placeholder="Search" id="searchBar" />
+      <main-content>
+        <input id="search" type="text" placeholder="Search" />
         <div class="filters">
-          <div class="filter " id="all-btn">All</div>
-          <div class="filter" id="mens-btn">Mens</div>
-          <div class="filter" id="womens-btn">Womens</div>
-          <div class="filter" id="jewellery-btn">jewellery</div>
-          <div class="filter" id="electronics-btn">electronics</div>
+          <div id="all" class="filter active">All</div>
+          <div id="men" class="filter">Mens</div>
+          <div id="women" class="filter">Womens</div>
+          <div id="jewellery" class="filter">Jewellery</div>
+          <div id="electronics" class="filter">Electronics</div>
         </div>
-
-        <section id="searched-section">
-          <title>Searched results</title>
-          <div class="items" id="searched-items">
-          
+        <section>
+          <div class="items">
+            <!-- <div class="item">
+              <img src="tshirt.png" alt="Item" />
+              <div class="info">
+                <div style="margin-bottom: 10px;">Title</div>
+                <div class="row">
+                  <div class="price">$100</div>
+                  <div class="sized">S,M,L</div>
+                </div>
+                <div class="colors">
+                  Colors:
+                  <div class="row">
+                    <div class="circle" style="background-color: #000"></div>
+                    <div class="circle" style="background-color: #4938af"></div>
+                    <div class="circle" style="background-color: #203d3e"></div>
+                  </div>
+                </div>
+                <div class="row">Rating:</div>
+              </div>
+              <button id="addBtn">Add to Cart</button>
+            </div> -->
           </div>
         </section>
-        
-        <section id="mens-section">
-          <title>Men's Clothing</title>
-          <div class="items" id="mens-items">
-          </div>
-        </section>
-
-        <section id="womens-section">
-          <title >Women's Clothing</title>
-          <div class="items" id="womens-items">
-          </div>
-        </section>
-
-        <section id="jewellery-section">
-          <title >Jewellery</title>
-          <div class="items" id="jewellery-items">
-          </div>
-        </section>
-
-        <section id="electronics-section">
-          <title >Electronics</title>
-          <div class="items" id="electronics-items">
-          </div>
-        </section>
-        
       </main-content>
     </main>
     <script src="./script.js"></script>

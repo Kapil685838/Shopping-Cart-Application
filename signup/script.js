@@ -1,59 +1,71 @@
-document.querySelector("form").addEventListener("submit", signup);
+const form = document.getElementById('inputs');
 
-//storing all user array if there is any otherwise empty array
-let user = JSON.parse(localStorage.getItem("user")) || [];
+var totalUser = [];
 
-//function to match email with regex to validate
-function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+form.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    // console.log('hello');
 
-    return regex.test(email);
-}
-let flag=true
-function signup(e) {
-    e.preventDefault();
-    //taking the values
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-    let confirmPassword = document.getElementById("confirmPassword").value;
+    const firstName = document.getElementById('first-name').value;
+    const lastName = document.getElementById('last-name').value;
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('pass').value;
+    const confPass = document.getElementById('confirm-pass').value;
 
-    if (
-        firstName == "" ||
-        lastName == "" ||
-        email == "" ||
-        password == "" ||
-        confirmPassword != password
-    ) {
-        alert("invalid details");
-    } else {
-        if (!validateEmail(email)) {
-            alert("invalid email");
-        } else {
-            for (var i = 0; i < user.length; i++) {
-                if (user[i].email === email) {
-                  alert('Email already in use.');
-                  return;
-                }
-              }
-           
-                let details = {
-                    id: user.length,
-                    firstName: document.getElementById("firstName").value,
-                    lastName: document.getElementById("lastName").value,
-                    email: document.getElementById("email").value,
-                    password: document.getElementById("password").value,
-                    confirmPassword: document.getElementById("confirmPassword").value,
-                };
-                user.push(details);
-    
-                // console.log("raaam");
-                localStorage.setItem("user", JSON.stringify(user));
-                console.log(user);
-                alert("signup successful");
-            
-            
-        }
+    if(!firstName || !lastName || !email || !pass || !confPass){
+        document.getElementById('message').style.display='inline';
+        document.getElementById('message').setAttribute('class','red')
+        document.getElementById('message').innerText='Error :All Fields are Mandatory.'
+        return;
     }
-}
+
+    if(pass!=confPass){
+        document.getElementById('message').style.display='inline';
+        document.getElementById('message').setAttribute('class','red')
+        document.getElementById('message').innerText='Error :Passwrod and Confirm Password Should be same.'
+        return;
+    }
+
+    var user={
+        firstName:firstName,
+        lastName:lastName,
+        email:email,
+        password:pass
+    }
+
+    let flag=false;
+    if(localStorage.getItem('totalUser')){
+        // console.log("hello");
+        totalUser=JSON.parse(localStorage.getItem('totalUser'));
+        totalUser.forEach((user)=>{
+            if(user.email==email){
+                flag=true;
+                document.getElementById('message').style.display='inline';
+                document.getElementById('message').setAttribute('class','red')
+                document.getElementById('message').innerText='Error :User Already Exist.';
+            }
+        })
+    }
+    if(flag==true){
+        //user already exist;
+        return;
+    }
+
+    totalUser.push(user);
+    // console.log("user",user);
+    // console.log(totalUser);
+
+    localStorage.setItem('totalUser',JSON.stringify(totalUser));
+
+    document.getElementById('message').style.display='inline';
+    document.getElementById('message').setAttribute('class','green')
+    document.getElementById('message').innerText='User Successfully Added';
+
+    form.reset();
+
+    setTimeout(()=>{  
+       location.href='../login/index.html';
+    },1500);
+
+})
+

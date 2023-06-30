@@ -1,63 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shopping cart application</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>MeShop.</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
-    <nav>
-      <div class="brand">
-        <a href="/">MeShop.</a>
-      </div>
-      <div class="nav-items">
-        <a href="./index.html">Home</a>
-        <a href="./login/index.html">Login</a>
-        <a href="./signup/index.html">Signup</a>
-        <a href="./login/index.html">My Cart</a>
-      </div>
-    </nav>
-    <main>
-    <div class="heading">
-      <p id="h1">MeShop.</p>
-      <p id="h4">Your First Shop Built on HTML, CSS and Javascript</p>
-      <button id="login-btn">Login</button>
-      
-      <button id="signup-btn">Sign Up</button>
+
+  <nav>
+    <div class="brand">
+      <a href="./index.html">MeShop.</a>
     </div>
-    <main-content>
-    <!-- <div class="items"> -->
-      <div class="item">
-        <div id="img-div">
-          <img src="./shop/tshirt.jpg" alt="Item" />
+    <div class="nav-items">
+      <a href="./index.html">Home</a>
+      <a href="./login/index.html">Login</a>
+      <a href="./signup/index.html">Signup</a>
+      <a href="./shop/index.html">Shop</a>
+      <a href="./cart/index.html">My Cart</a>
+      <a href="./profile/index.html">Profile</a>
+    </div>
+  </nav>
 
-        </div>
-        <div class="info" id="info-div">
-              <div class="row">
-                <div class="price">$100</div>
-                <div class="sized">S,M,L</div>
-              </div>
-              <div class="colors">
-                Colors:
-                <div class="row">
-                  <div class="circle" style="background-color: #000"></div>
-                  <div class="circle" style="background-color: #4938af"></div>
-                  <div class="circle" style="background-color: #203d3e"></div>
-                </div>
-              </div>
-              <div class="row">Rating: ⭐⭐⭐⭐</div>
-            </div>
-        <div id="btn-div">
-          <button id="addBtn">Add to Cart</button>
-
-        </div>
+  <div class="container">
+    <div>
+      <h1 style="font-size: 60px; font-weight: 400;">MeShop.</h1>
+      <p>Your First Shop built on HTML,CSS AND JavaScript</p>
+      <div class="buttons-container">
+        <button id="login">Login</button>
+        <button id="signup" style="background-color: white; color: black; border:1px solid black">Signup</button>
       </div>
-    <!-- </div> -->
-    <img src="./landingPagePic.jpg" alt="" id="img2">
-  </main-content>
-</main>
-<script src="./script.js"></script>
-  </body>
+    </div>
+  </div>
+
+
+
+
+
+  <script src="./script.js"></script>
+</body>
+
 </html>

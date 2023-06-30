@@ -1,352 +1,248 @@
-//Filter buttons-------------------------------------------------------------------------------------------->
-const allFilter = document.querySelector("#all-btn");
-const mensFilter = document.querySelector("#mens-btn");
-const womensFilter = document.querySelector("#womens-btn");
-const jewelleryFilter = document.querySelector("#jewellery-btn");
-const electronicsFilter = document.querySelector("#electronics-btn");
-
-//different sections---------------------------------------------------------------------------------------->
-const mensSection = document.querySelector("#mens-section");
-const womensSection = document.querySelector("#womens-section");
-const jewellerySection = document.querySelector("#jewellery-section");
-const electronicsSection = document.querySelector("#electronics-section");
-const searchSection = document.querySelector("#searched-section");
-
-const search = document.querySelector("#searchBar");
-const rangeBar=document.querySelector("#range")
-
-const applyBtn=document.querySelector("#apply-btn")
-const lowPrice=document.querySelector("#low")
-const midPrice=document.querySelector("#mid")
-const highPrice=document.querySelector("#high")
-const vHighPrice=document.querySelector("#vHigh")
+const produtc = {
+  id: 1,
+  title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+  price: 109.95,
+  description:
+    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+  category: "men's clothing",
+  image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+  rating: { rate: 3.9, count: 120 },
+};
 
 
-
-let men = []; 
-let women = []; 
-let jewelery = [];
-let electronics = []; 
-let response = [];
-let myCartArray = []; 
-let temp=JSON.parse(localStorage.getItem("cart"))
-if(temp){
-  myCartArray=temp
-}
-//fetching api---------------------------------------------------------------------------------------------->
-fetchAPI("https://fakestoreapi.com/products");
-async function fetchAPI(url) {
-  try {
-    let data = await fetch(url);
-    console.log(data);
-    response = await data.json();
-    console.log(response);
-
-    men = response.filter((item) => {
-      return item.category == "men's clothing";
-    });
-    console.log(men);
-
-    jewelery = response.filter((item) => {
-      return item.category == "jewelery";
-    });
-    console.log(jewelery);
-
-    electronics = response.filter((item) => {
-      return item.category == "electronics";
-    });
-    console.log(electronics);
-
-    women = response.filter((item) => {
-      return item.category == "women's clothing";
-    });
-    console.log(women);
-
-    showAll();
-  } catch (error) {
-    console.log("error-msg" + error);
-  }
+if(!localStorage.getItem('currUser')){
+  location.href='../login/index.html';
 }
 
-//add to cart function-------------------------------------------------------------------------------------->
-function addToCart(itemId) {
-  let temp = response.filter((item) => {
-    return item.id == itemId;
+const itemsContainer = document.querySelector('.items');
+const search = document.getElementById('search');
+const allBtn = document.getElementById('all');
+const menBtn = document.getElementById('men');
+const womenBtn = document.getElementById('women');
+const jewelleryBtn = document.getElementById('jewellery');
+const electronicsBtn = document.getElementById('electronics');
+const range = document.getElementById('range');
+
+var itemArr=[];
+
+if(localStorage.getItem('cartArr')){
+  var cartArr=JSON.parse(localStorage.getItem('cartArr'));
+}
+else{
+  var cartArr=[];
+}
+
+
+fetch("https://fakestoreapi.com/products")
+.then((resp)=>resp.json())
+.then((data)=>{
+  itemArr=data;
+  localStorage.setItem('itemArr',JSON.stringify(itemArr));
+  showItems(itemArr);
+  console.log(itemArr);
+});
+
+function showItems(Arr){
+  itemsContainer.innerHTML='';
+  Arr.forEach(ele => {
+    itemsContainer.innerHTML+=`
+  <div class="item">
+  <img src="${ele.image}" alt="Item" />
+  <div class="info">
+    <div style="margin-bottom: 10px; font-weight:600">${ele.title}</div>
+    <div style="font-weight:bold" class="row">
+      <div class="price">$${ele.price}</div>
+    </div>
+    <div style='margin-top:10px;' class="row">Rating: ${Math.floor(ele.rating.rate)}</div>
+  </div>
+  <button id="addBtn" onClick='addToCart(${ele.id})'>Add to Cart</button>
+</div>
+  `
   });
   
-  myCartArray.push(temp[0]);
-  localStorage.setItem("cart", JSON.stringify(myCartArray));
+
 }
 
-//allFilter function---------------------------------------------------------------------------------------->
-allFilter.addEventListener("click", showAll);
-function showAll() {
-  allFilter.classList.add("active");
-  searchSection.classList.add("hide-class");
-
-  const allSections = [
-    mensSection,
-    womensSection,
-    jewellerySection,
-    electronicsSection,
-  ];
-  allSections.forEach((section) => section.classList.remove("hide-class"));
-
-  const allFilters = [
-    mensFilter,
-    womensFilter,
-    jewelleryFilter,
-    electronicsFilter,
-  ];
-  allFilters.forEach((section) => section.classList.remove("active"));
-
-  const myHTML_1 = men.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("mens-items").innerHTML = myHTML_1.join("");
-
-  const myHTML_2 = women.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("womens-items").innerHTML = myHTML_2.join("");
-
-  const myHTML_3 = jewelery.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("jewellery-items").innerHTML = myHTML_3.join("");
-
-  const myHTML_4 = electronics.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("electronics-items").innerHTML = myHTML_4.join("");
-}
-
-//mensFilter function--------------------------------------------------------------------------------------->
-mensFilter.addEventListener("click", showMensClothings);
-function showMensClothings() {
-  mensSection.classList.remove("hide-class");
-  mensFilter.classList.add("active");
-
-  const allSections = [womensSection, jewellerySection, electronicsSection];
-  allSections.forEach((section) => section.classList.add("hide-class"));
-
-  const allFilters = [
-    allFilter,
-    womensFilter,
-    jewelleryFilter,
-    electronicsFilter,
-  ];
-  allFilters.forEach((section) => section.classList.remove("active"));
-
-  const myHTML = men.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("mens-items").innerHTML = myHTML.join("");
-}
-
-//womesFilter function-------------------------------------------------------------------------------------->
-womensFilter.addEventListener("click", showWomensClothings);
-function showWomensClothings() {
-  womensSection.classList.remove("hide-class");
-  womensFilter.classList.add("active");
-
-  const allSections = [mensSection, jewellerySection, electronicsSection];
-  allSections.forEach((section) => section.classList.add("hide-class"));
-
-  const allFilters = [
-    allFilter,
-    mensFilter,
-    jewelleryFilter,
-    electronicsFilter,
-  ];
-  allFilters.forEach((section) => section.classList.remove("active"));
-
-  const myHTML = women.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("womens-items").innerHTML = myHTML.join("");
-}
-
-//jewelleryFilter function---------------------------------------------------------------------------------->
-jewelleryFilter.addEventListener("click", showJewellery);
-function showJewellery() {
-  jewellerySection.classList.remove("hide-class");
-  jewelleryFilter.classList.add("active");
-
-  const allSections = [mensSection, womensSection, electronicsSection];
-  allSections.forEach((section) => section.classList.add("hide-class"));
-
-  const allFilters = [allFilter, mensFilter, womensFilter, electronicsFilter];
-  allFilters.forEach((section) => section.classList.remove("active"));
-
-  const myHTML = jewelery.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("jewellery-items").innerHTML = myHTML.join("");
-}
-
-//electronicsFilter function---------------------------------------------------------------------------------->
-electronicsFilter.addEventListener("click", showElectronics);
-function showElectronics() {
-  electronicsSection.classList.remove("hide-class");
-  electronicsFilter.classList.add("active");
-
-  const allSections = [mensSection, jewellerySection, womensSection];
-  allSections.forEach((section) => section.classList.add("hide-class"));
-
-  const allFilters = [allFilter, mensFilter, jewelleryFilter, womensFilter];
-  allFilters.forEach((section) => section.classList.remove("active"));
-
-  const myHTML = electronics.map((item) => {
-    return renderItems(item);
-  });
-  document.getElementById("electronics-items").innerHTML = myHTML.join("");
-}
-
-//search function------------------------------------------------------------------------------------------->
-search.addEventListener("input", searchItems);
-function searchItems() {
-  const searchTerm = search.value.toLowerCase().trim();
-  let searchResults = response.filter((item) =>
-    item.title.toLowerCase().includes(searchTerm)
-  );
-
-  const allSections = [
-    mensSection,
-    womensSection,
-    jewellerySection,
-    electronicsSection,
-  ];
-  allSections.forEach((section) => section.classList.add("hide-class"));
-
-  const allFilters = [
-    allFilter,
-    mensFilter,
-    womensFilter,
-    jewelleryFilter,
-    electronicsFilter,
-  ];
-  allFilters.forEach((section) => section.classList.remove("active"));
-  
-  
-console.log(searchResults)
-
-
-  if (searchTerm !== "") {
-   
-    const searchHTML = searchResults.map((item) => renderItems(item));
-    document.getElementById("searched-items").innerHTML = searchHTML.join("");
-    searchSection.classList.remove("hide-class");
-  } else {
-    document.getElementById("searched-items").innerHTML = "No items found";
-    // document.getElementById("searched-section").classList.add("hide-class");
-  }
-  if(searchResults.length==0){
-    document.getElementById("searched-items").innerHTML = "No items found";
-  
+search.addEventListener('input',()=>{
+  myArr = itemArr.filter(ele=>{
+    if(ele.title.toLowerCase().includes(search.value.trim().toLowerCase())){
+      return ele;
     }
+  })
+  if(myArr.length==0){
+    itemsContainer.innerHTML=`
+    <p>Oops,No products found for this filtering, try different combinations!</P>
+    `
+    return;
+  }
+  showItems(myArr);
+})
+
+allBtn.addEventListener('click',()=>{
+  myArr =JSON.parse(localStorage.getItem('itemArr'));
+  allBtn.style.backgroundColor='black';
+  allBtn.style.color='white';
+  menBtn.style.color='black';
+  menBtn.style.backgroundColor='white';
+  womenBtn.style.color='black';
+  womenBtn.style.backgroundColor='white';
+  jewelleryBtn.style.color='black';
+  jewelleryBtn.style.backgroundColor='white';
+  electronicsBtn.style.color='black';
+  electronicsBtn.style.backgroundColor='white';
+  showItems(myArr);
+})
+
+
+menBtn.addEventListener('click',()=>{
+  myArr = itemArr.filter(ele=>{
+    if(ele.category=="men's clothing"){
+      return ele;
+    }
+  })
+  allBtn.style.backgroundColor='white';
+  allBtn.style.color='black';
+  menBtn.style.color='white';
+  menBtn.style.backgroundColor='black';
+  womenBtn.style.color='black';
+  womenBtn.style.backgroundColor='white';
+  jewelleryBtn.style.color='black';
+  jewelleryBtn.style.backgroundColor='white';
+  electronicsBtn.style.color='black';
+  electronicsBtn.style.backgroundColor='white';
+
+
+  showItems(myArr);
+})
+
+womenBtn.addEventListener('click',()=>{
+  myArr = itemArr.filter(ele=>{
+    if(ele.category=="women's clothing"){
+      return ele;
+    }
+  })
+  allBtn.style.backgroundColor='white';
+  allBtn.style.color='black';
+  menBtn.style.color='black';
+  menBtn.style.backgroundColor='white';
+  womenBtn.style.color='white';
+  womenBtn.style.backgroundColor='black';
+  jewelleryBtn.style.color='black';
+  jewelleryBtn.style.backgroundColor='white';
+  electronicsBtn.style.color='black';
+  electronicsBtn.style.backgroundColor='white';
+
+  showItems(myArr);
+})
+
+jewelleryBtn.addEventListener('click',()=>{
+  myArr = itemArr.filter(ele=>{
+    if(ele.category=="jewelery"){
+      return ele;
+    }
+  })
+  allBtn.style.backgroundColor='white';
+  allBtn.style.color='black';
+  menBtn.style.color='black';
+  menBtn.style.backgroundColor='white';
+  womenBtn.style.color='black';
+  womenBtn.style.backgroundColor='white';
+  jewelleryBtn.style.color='white';
+  jewelleryBtn.style.backgroundColor='black';
+  electronicsBtn.style.color='black';
+  electronicsBtn.style.backgroundColor='white';
+
+  showItems(myArr);
+})
+
+electronicsBtn.addEventListener('click',()=>{
+  myArr = itemArr.filter(ele=>{
+    if(ele.category=="electronics"){
+      return ele;
+    }
+  })
+  allBtn.style.backgroundColor='white';
+  allBtn.style.color='black';
+  menBtn.style.color='black';
+  menBtn.style.backgroundColor='white';
+  womenBtn.style.color='black';
+  womenBtn.style.backgroundColor='white';
+  jewelleryBtn.style.color='black';
+  jewelleryBtn.style.backgroundColor='white';
+  electronicsBtn.style.color='white';
+  electronicsBtn.style.backgroundColor='black';
+
+  showItems(myArr);
+})
+
+range.addEventListener('input',()=>{
+  console.log(range.value);
+  if(range.value==0){
+    showItems(itemArr);
+    return;
+  }
+  myArr = itemArr.filter(ele=>{
+    if(Math.floor(ele.rating.rate)==range.value){
+      return ele;
+    }
+  })
+  if(myArr.length==0){
+    itemsContainer.innerHTML=`
+    <p>Oops,No products found for this filtering, try different combinations!</P>
+    `
+    return;
+  }
+  showItems(myArr);
+})
+
+
+document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+  c.addEventListener('change', filterProducts);
+});
+
+
+function filterProducts() {
+  const checkboxes = Array.from(document.querySelectorAll('input[name="prange"]'));
+  const checkedRanges = checkboxes.filter(c => c.checked).map(c => c.value);
+
+  if (checkedRanges.length === 0) {
+    showItems(itemArr);
+    return;
+  }
+
+
+  const filteredProducts = itemArr.filter(p => {
+    const price = p.price;
+    for (const range of checkedRanges) {
+      if (range === '100+' && price >= 100) {
+        return true;
+      }
+      const [min, max] = range.split('-').map(parseFloat);
+      if (price >= min && price <= max) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+
+  myArr = itemArr.filter(p =>{
+    if(filteredProducts.includes(p)){
+      return p;
+    }
+  })
+  showItems(myArr);
 }
 
-//render function------------------------------------------------------------------------------------------->
-function renderItems(item) {
-   //  <div class="title">${item.title}</div>  after div class info
-  return `
- <div class="item">
- <div id="img-div">
- <img src=${item.image} alt="Item" />
- </div>
-   <div class="info" id="info-div">
-   <div class="title">${item.title.slice(0,42)}...</div>
-   <div class="row">
-     <div class="price">$${item.price}</div>
-     <div class="sized">S,M,L</div>
-   </div>
-   <div class="colors">
-     Colors:
-     <div class="row">
-       <div class="circle" style="background-color: #000"></div>
-       <div class="circle" style="background-color: #4938af"></div>
-       <div class="circle" style="background-color: #203d3e"></div>
-     </div>
-   </div>
-   <div class="row">Rating: ${item.rating.rate}⭐</div>
- </div>
-  <div id="btn-div">
- <button id="addBtn" onclick="addToCart(${item.id})">Add to Cart</button>
- </div>
-</div>`;
+
+function addToCart(id){
+  let item;
+  itemArr.forEach((ele)=>{
+    if(ele.id==id){
+      item=ele;
+    }
+  })
+  cartArr.push(item);
+  localStorage.setItem('cartArr',JSON.stringify(cartArr));
+  console.log(JSON.parse(localStorage.getItem('cartArr')));
 }
-
-//function for the range bar--------------------------------------->
-rangeBar.addEventListener("input", applyRatingFilter)
-function applyRatingFilter(){
-  const ratingValue = rangeBar.value
-  let ratingResults = response.filter((item) =>{
-    return Math.floor(item.rating.rate)==(ratingValue)
-
-  } );
-  const searchHTML = ratingResults.map((item) => renderItems(item));
-  document.getElementById("searched-items").innerHTML = searchHTML.join("");
-  searchSection.classList.remove("hide-class");
-}
-
-//function for  filtering according ti price--------------------------------->
-applyBtn.addEventListener("click",filterPrice)
-function filterPrice(){
-  let resultsArr=[]
-  if(lowPrice.checked==true){
-    
-    let temp=response.filter((item)=>{
-      return item.price<=25.0
-    })
-    
-   temp.forEach((item)=>{
-    resultsArr.push(item)
-   })
-   
-  }
-  if(midPrice.checked==true){
-    
-    let temp=response.filter((item)=>{
-      return item.price>=25.0 && item.price<=50.0
-    })
-    
-   temp.forEach((item)=>{
-    resultsArr.push(item)
-   })
-   
-  }
-  if(highPrice.checked==true){
-    
-    let temp=response.filter((item)=>{
-      return item.price>=50.0 && item.price<=100.0
-    })
-    
-   temp.forEach((item)=>{
-    resultsArr.push(item)
-   })
-   
-  }
-  if(vHighPrice.checked==true){
-    
-    let temp=response.filter((item)=>{
-      return item.price>=100.0
-    })
-    
-   temp.forEach((item)=>{
-    resultsArr.push(item)
-   })
-   
-  }
- 
-  const searchHTML = resultsArr.map((item) => renderItems(item));
-  document.getElementById("searched-items").innerHTML = searchHTML.join("");
-  searchSection.classList.remove("hide-class");
-  
-  if(lowPrice.checked==false && midPrice.checked==false && highPrice.checked==false && vHighPrice.checked==false){
-    document.getElementById("searched-items").innerHTML =""
-    searchSection.classList.add("hide-class");
-
-  }
-  }
-      

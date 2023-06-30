@@ -1,24 +1,82 @@
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
+const form = document.getElementById('inputs');
 
-loginBtn.addEventListener("click", checkCred);
+var totalUser=[];
 
-function checkCred(e) {
-    e.preventDefault();
-    const valid = JSON.parse(localStorage.getItem("user"));
-    if (!valid) {
-        alert("No user found. Please register first.");
+if(localStorage.getItem('currUser')){
+    document.getElementById('message').style.display='inline';
+    document.getElementById('message').setAttribute('class','green')
+    document.getElementById('message').innerText='Login Successfully';
+}
+
+
+
+
+form.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    // console.log("Hello");
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+
+    if(!email || !password){
+        document.getElementById('message').style.display='inline';
+        document.getElementById('message').setAttribute('class','red')
+        document.getElementById('message').innerText='Error :All Fields are Mandatory.'
         return;
     }
-    for (let i = 0; i < valid.length; i++) {
-        if (valid[i].email === email.value && valid[i].password === password.value) {
-            console.log("hello");
-            let currentUser = valid[i];
-            localStorage.setItem("currentUser", JSON.stringify(currentUser));
-            window.location.href = "../shop/index.html";
-            return;
-        }
+
+    let flag=false;
+    let currUser;
+
+    if(localStorage.getItem('totalUser')){
+        totalUser=JSON.parse(localStorage.getItem('totalUser'));
+
+
+        totalUser.forEach((user)=>{
+            if(user.email==email){
+                flag=true;
+                user.token=generateToken();
+                currUser=user;
+                localStorage.setItem('currUser',JSON.stringify(user));
+            }
+        })
+
     }
-    alert("Credentials do not match");
+
+    if(flag==true && password!=currUser.password){
+        document.getElementById('message').style.display='inline';
+        document.getElementById('message').setAttribute('class','red')
+        document.getElementById('message').innerText='Error : Wrong Password.'
+        return;
+    }
+    
+    if(flag==false){
+        document.getElementById('message').style.display='inline';
+        document.getElementById('message').setAttribute('class','red')
+        document.getElementById('message').innerText='Error : User does not Exist.'
+        return;
+    }
+
+
+    document.getElementById('message').style.display='inline';
+    document.getElementById('message').setAttribute('class','green')
+    document.getElementById('message').innerText='Login Successfully';
+
+    form.reset();
+
+    setTimeout(()=>{  
+        location.href='../shop/index.html';
+     },1500);
+
+
+})
+
+
+function generateToken(){
+    let token = '';
+    for (let i = 0; i < 16; i++) {
+      token += String.fromCharCode(Math.floor(Math.random() * 256));
+    }
+    
+    return btoa(token);
 }
